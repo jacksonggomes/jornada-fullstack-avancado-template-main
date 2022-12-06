@@ -56,7 +56,7 @@ const deleteById = (req, res) => {
     const id = req.params.id;
 
     if (!isObjectIdValid(id)) {
-        return res.status(400).send({ message: "ID inválido!" });
+        return res.status(400).send({ message: "ID da inválido!" });
     }
 
     const deletedCategory = {};
