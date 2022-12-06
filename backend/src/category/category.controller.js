@@ -5,7 +5,6 @@ const findAll = (req, res) => {
     res.send(categories);
 };
 
-//ESta classe blá blá blá
 
 const findById = (req, res) => {
     const id = req.params.id;
