@@ -1,18 +1,20 @@
+const service = require("./item.service");
 const { isObjectIdValid } = require("../db/database.helper");
+const Item = require("./item.model");
 
-const findAll = (req, res) => {
-    const items = [];
+const findAll = async (req, res) => {
+    const items = await service.findAll();
     res.send(items);
 };
 
-const findById = (req, res) => {
+const findById = async (req, res) => {
     const id = req.params.id;
 
     if (!isObjectIdValid(id)){
         return res.status(400).send({ message: "ID inválido!" });
     }
 
-    const item = {};
+    const item = await service.findById(id);
     if (!item) {
         return res.status(404).send({ message: "Item não encontrado!" });
     }
@@ -20,18 +22,18 @@ const findById = (req, res) => {
     res.send(item);
 };
 
-const create = (req, res) => {
+const create = async (req, res) => {
     const item = req.body;
 
     if (!item || !item.name || !item.imageUrl || !item.category ) {
         return res.status(400).send({ message: "Dados inválidos!"});
     }
 
-    const newItem = {};
+    const newItem = await service.create(item);
 
     res.status(201).send(newItem);
 };
-const update = (req, res) => {
+const update = async (req, res) => {
     const id = req.params.id;
 
     if (!isObjectIdValid(id)) {
@@ -44,7 +46,7 @@ const update = (req, res) => {
         return res.status(400).send({ message: "Dados inválidos!" });
     }
 
-    const updateItem = {};
+    const updateItem = await service.update(id);
 
     if (!updateItem) {
         return res.send(404).send({ message: "Item não encontrado!" });
@@ -52,14 +54,14 @@ const update = (req, res) => {
 
     res.send({ message: "Item atualizado com sucesso!" });
 };
-const deleteById = (req, res) => {
+const deleteById = async (req, res) => {
     const id = req.params.id;
 
     if (!isObjectIdValid(id)) {
         return res.status(400).send({ message: "ID inválido!" });
     }
 
-    const deletedItem = {};
+    const deletedItem = await service.deleteById(id);
 
     if (!deletedItem) {
         return res.status(404).send({ message: "Item não encontrado!" });
